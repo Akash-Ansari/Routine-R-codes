@@ -1,0 +1,10 @@
+# No. of NON-missing values in each of the variables in the dataset.
+
+cbind(sapply(df1, function(x) sum(!is.na(x))))
+
+
+
+
+
+
+
