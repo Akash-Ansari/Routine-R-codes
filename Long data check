@@ -1,0 +1,17 @@
+
+# if the following returns 0, then the df is in wide format.
+
+df %>%
+  group_by(subject_identifier) %>%
+  tally() %>%
+  filter(n > 1)
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
