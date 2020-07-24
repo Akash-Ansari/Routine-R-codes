@@ -6,7 +6,7 @@ cbind(sapply(df1, function(x) sum(!is.na(x))))
 # using purrr::map
 
 df %>%
-	map(~sum(!is.na(.)))
+   map(~sum(!is.na(.)))
 
 
 
