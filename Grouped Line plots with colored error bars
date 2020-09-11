@@ -1,0 +1,46 @@
+df_new2 %>%
+  dplyr::select(record_id, nec3cat, contains("anc")) %>%
+  gather(anc, measurement, absolute_anc:anc_day_7_nec) -> anc_long
+
+
+
+anc_long %>%
+  mutate(time = factor(case_when(
+    anc == "absolute_anc"                ~ "Before NEC",
+    anc == "absolute_anc_after_nec"      ~ "Day of NEC onset",
+    anc == "absolute_anc_after_nec1_day" ~ "Day 1 after NEC",
+    anc == "anc_2_day_nec"               ~ "Day 2 after NEC",
+    anc == "anc_3day_nec"                ~ "Day 3 after NEC",
+    anc == "anc_4th_day_nec"             ~ "Day 4 after NEC",
+    anc == "anc_day_7_nec"               ~ "Day 7 after NEC"
+  ))) %>%
+  ungroup() -> anc_long
+
+
+anc_long$time = fct_relevel(anc_long$time, c("Before NEC", "Day of NEC onset", "Day 1 after NEC", "Day 2 after NEC", 
+                                                   "Day 3 after NEC", "Day 4 after NEC",  "Day 7 after NEC"))
+
+
+anc_long %>%
+  group_by(nec3cat, time) %>%
+  summarise(ANC = median(measurement, na.rm = TRUE),
+            sd    = sd(measurement,  na.rm = TRUE),
+            q1 = quantile(measurement, 0.25, na.rm = TRUE),
+            q3 = quantile(measurement, 0.75, na.rm = TRUE)
+            ) %>%  ungroup() -> anc_long_df
+
+pd = position_dodge(0.2)
+
+ggplot(anc_long_df, aes(x=time, y=ANC, group = nec3cat, color = nec3cat)) + 
+  geom_line(aes(linetype=nec3cat)) +  
+  geom_errorbar(aes(ymin=ANC-q1, ymax=ANC+q3), position = pd) +
+  geom_point(position = pd) +
+  theme(legend.position = "none")+ geom_point(aes(shape = nec3cat))+
+  ylab("Neutrophils (cells/mm3)") -> anc_plt
+  
+ggan = anc_plt +  theme_pubr()+ theme( legend.position = "none", plot.caption = element_text(hjust = 0), 
+                                   plot.caption.position =  "plot")+ 
+  theme(text = element_text(size=10), axis.text.x = element_text(angle = 45, hjust = 1, size=8), 
+        axis.text.y = element_text(size = 10), legend.text=element_text(size=7)) + xlab("")
+# png("ANC_wo_errorbar.png")
+ggan
