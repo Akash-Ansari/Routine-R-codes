@@ -1,0 +1,13 @@
+# Function to recode 0, 1 as yes, no ---
+yn = function(...){
+  recode_factor(..., 
+                `0` = "No",
+                `1` = "Yes"
+                )
+}
+
+
+data %>%
+  mutate_at(vars(var1:var5), yn)
+
+
