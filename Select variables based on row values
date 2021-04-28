@@ -1,0 +1,62 @@
+
+
+library(tidyverse)
+
+df <- data.frame(
+  a1 = c(letters[1:5], "Akash"),
+  b1 = c(letters[10:14], "Ansari"),
+  c1 = c(letters[15:19], "Akash")
+)
+
+df
+#>      a1     b1    c1
+#> 1     a      j     o
+#> 2     b      k     p
+#> 3     c      l     q
+#> 4     d      m     r
+#> 5     e      n     s
+#> 6 Akash Ansari Akash
+
+
+# option 1
+df %>% 
+  select(where(~ "Akash" %in% .))
+#>      a1    c1
+#> 1     a     o
+#> 2     b     p
+#> 3     c     q
+#> 4     d     r
+#> 5     e     s
+#> 6 Akash Akash
+
+# option 2
+df %>% 
+  select(where(~ any(. == "Akash")))
+#>      a1    c1
+#> 1     a     o
+#> 2     b     p
+#> 3     c     q
+#> 4     d     r
+#> 5     e     s
+#> 6 Akash Akash
+
+# option 3
+df %>% 
+  select(where(~ any(str_detect(.x, "Akash"))))
+#>      a1    c1
+#> 1     a     o
+#> 2     b     p
+#> 3     c     q
+#> 4     d     r
+#> 5     e     s
+#> 6 Akash Akash
+
+
+
+
+
+
+
+
+
+
