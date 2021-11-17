@@ -1,0 +1,34 @@
+# Source: https://www.tmwr.org/base-r.html#fn7
+
+
+# Another option is to use the conflicted package. We can set a rule that remains in effect until the end of the R session to ensure that one specific function will always run if # no namespace is given in the code. As an example, if we prefer the dplyr version of the above function:
+
+library(conflicted)
+conflict_prefer("filter", winner = "dplyr")
+
+
+# For convenience, tidymodels contains a function that captures most of the common naming conflicts that we might encounter:
+
+tidymodels_prefer(quiet = FALSE)
+#> [conflicted] Will prefer dplyr::filter over any other package
+#> [conflicted] Will prefer dplyr::select over any other package
+#> [conflicted] Will prefer dplyr::slice over any other package
+#> [conflicted] Will prefer dplyr::rename over any other package
+#> [conflicted] Will prefer dials::neighbors over any other package
+#> [conflicted] Will prefer parsnip::fit over any other package
+#> [conflicted] Will prefer parsnip::bart over any other package
+#> [conflicted] Will prefer parsnip::pls over any other package
+#> [conflicted] Will prefer purrr::map over any other package
+#> [conflicted] Will prefer recipes::step over any other package
+#> [conflicted] Will prefer themis::step_downsample over any other package
+#> [conflicted] Will prefer themis::step_upsample over any other package
+#> [conflicted] Will prefer tune::tune over any other package
+#> [conflicted] Will prefer yardstick::precision over any other package
+#> [conflicted] Will prefer yardstick::recall over any other package
+#> ── Conflicts ───────────────────────────────────────────────── tidymodels_prefer() ──
+#> 
+
+
+
+
+
