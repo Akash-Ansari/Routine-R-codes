@@ -1,1 +1,4 @@
 http://www.cookbook-r.com/Formulas/Creating_a_formula_from_a_string/
+
+For numeric variables to be summarised as medians in compareGroups-
+paste(dput(names(data %>% select_if(is.numeric))), collapse=" = 2, ")
